@@ -83,7 +83,7 @@ function getRandom(option) {
       ret = Math.random() * 6;
       break;
     case 'fnx':
-      random = -0.5 + Math.random() * 1;
+      random = -0.25 + Math.random() * 1;
       ret = function(x, y) {
         return x + 0.5 * random - 1.7;
       };
@@ -91,7 +91,7 @@ function getRandom(option) {
     case 'fny':
       random = 1.5 + Math.random() * 0.7
       ret = function(x, y) {
-        return y + random;
+        return y + random * 0.5;
       };
       break;
     case 'fnr':
@@ -121,7 +121,7 @@ function startSakura() {
   document.getElementsByTagName('body')[0].appendChild(canvas);
   cxt = canvas.getContext('2d');
   var sakuraList = new SakuraList();
-  for(var i = 0; i < 20; i++) {
+  for(var i = 0; i < 10; i++) {
     var sakura, randomX, randomY, randomS, randomR, randomFnx, randomFny;
     randomX = getRandom('x');
     randomY = getRandom('y');
