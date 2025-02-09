@@ -23,17 +23,17 @@
     star.style.width = `${size}px`;
     star.style.height = `${size}px`;
 
-    // 随机设置星星的位置
+    // 随机设置星星的初始位置
     const startX = Math.random() * window.innerWidth;
     const startY = Math.random() * window.innerHeight;
     star.style.left = `${startX}px`;
     star.style.top = `${startY}px`;
 
     // 随机设置星星的飘动速度
-    const duration = Math.random() * 5 + 5; // 星星漂浮的时间在 5s 到 10s 之间
-    star.style.animation = `drift ${duration}s linear infinite`;
+    const duration = Math.random() * 10 + 15; // 星星漂浮的时间在 15s 到 25s 之间
+    star.style.animation = `drift ${duration}s linear infinite, blink 1.5s ease-in-out infinite`;
 
-    // 给星星添加漂浮动画
+    // 给星星添加闪烁动画
     const styleSheet = document.styleSheets[0] || document.createElement('style');
     if (!document.styleSheets.length) {
       document.head.appendChild(styleSheet);
@@ -41,10 +41,24 @@
     styleSheet.insertRule(`
       @keyframes drift {
         0% {
-          transform: translateY(0) translateX(0);
+          transform: translate(${Math.random() * 100 - 50}vw, ${Math.random() * 100 - 50}vh);
+        }
+        50% {
+          transform: translate(${Math.random() * 100 - 50}vw, ${Math.random() * 100 - 50}vh);
         }
         100% {
-          transform: translateY(100vh) translateX(100vw);
+          transform: translate(${Math.random() * 100 - 50}vw, ${Math.random() * 100 - 50}vh);
+        }
+      }
+    `, styleSheet.cssRules.length);
+
+    styleSheet.insertRule(`
+      @keyframes blink {
+        0%, 100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
         }
       }
     `, styleSheet.cssRules.length);
@@ -58,6 +72,6 @@
     }, duration * 1000);
   }
 
-  // 每隔 100 毫秒创建一颗星星
-  setInterval(createStar, 100);
+  // 每隔 150 毫秒创建一颗星星
+  setInterval(createStar, 150);
 })();
