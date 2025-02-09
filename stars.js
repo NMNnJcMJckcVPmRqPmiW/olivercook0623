@@ -6,9 +6,9 @@ img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAA
 function Star(x, y, s, r, fn) {
   this.x = x;
   this.y = y;
-  this.s = s;  
-  this.r = r;  
-  this.fn = fn;  
+  this.s = s;
+  this.r = r;
+  this.fn = fn;
 }
 
 Star.prototype.draw = function(cxt) {
@@ -28,7 +28,7 @@ Star.prototype.update = function() {
   this.y = this.fn.y(this.y, this.y);
   this.r = this.fn.r(this.r);
 
-  
+  // 如果星光超出画布，则重置其位置
   if (this.x > window.innerWidth || this.x < 0 || this.y > window.innerHeight || this.y < 0) {
     this.x = getRandom('x');
     this.y = getRandom('y');
@@ -75,27 +75,27 @@ function getRandom(option) {
       ret = Math.random() * window.innerHeight;
       break;
     case 's':
-      ret = Math.random() * 0.5 + 0.2;  
+      ret = Math.random() * 0.5 + 0.2;  // 星光大小介于0.2和0.7之间
       break;
     case 'r':
-      ret = Math.random() * 6;  
+      ret = Math.random() * 6;  // 随机旋转角度
       break;
     case 'fnx':
-      random = 0.1 + Math.random() * 0.2;
+      random = 0.05 + Math.random() * 0.1; // 减缓漂浮速度
       ret = function(x, y) {
-        return x + random * Math.sin(Math.random() * Math.PI); 
+        return x + random * Math.sin(Math.random() * Math.PI); // 星光在水平方向上随随机角度漂浮
       };
       break;
     case 'fny':
-      random = 0.1 + Math.random() * 0.3;
+      random = 0.05 + Math.random() * 0.1; // 减缓漂浮速度
       ret = function(x, y) {
-        return y - random;  
+        return y - random;  // 向上漂浮
       };
       break;
     case 'fnr':
-      random = Math.random() * 0.01;
+      random = Math.random() * 0.005;  // 更缓慢的旋转
       ret = function(r) {
-        return r + random;  
+        return r + random;  // 随机增加旋转角度
       };
       break;
   }
@@ -118,7 +118,7 @@ function startStars() {
   document.getElementsByTagName('body')[0].appendChild(canvas);
   cxt = canvas.getContext('2d');
   var starList = new StarList();
-  for (var i = 0; i < 100; i++) {  
+  for (var i = 0; i < 100; i++) {  // 增加星光数量
     var star, randomX, randomY, randomS, randomR, randomFnx, randomFny;
     randomX = getRandom('x');
     randomY = getRandom('y');
@@ -143,4 +143,18 @@ function startStars() {
 }
 
 window.onresize = function() {
-  var canv
+  var canvasStars = document.getElementById('canvas_stars');
+  canvasStars.width = window.innerWidth;
+  canvasStars.height = window.innerHeight;
+}
+
+function stopStars() {
+  if (staticx) {
+    var child = document.getElementById("canvas_stars");
+    child.parentNode.removeChild(child);
+    window.cancelAnimationFrame(stop);
+    staticx = false;
+  } else {
+    startStars();
+  }
+}
